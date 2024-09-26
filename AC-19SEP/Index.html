@@ -1,0 +1,53 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Proyecciones</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: white;
+        }
+        .container {
+            text-align: center;
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        .label {
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tipos de Proyecciones</h1>
+        <div class="canvas-container">
+            <div>
+                <canvas id="perspectiva" width="150" height="150"></canvas>
+                <div class="label">PERSPECTIVA</div>
+            </div>
+            <div>
+                <canvas id="ortografica" width="150" height="150"></canvas>
+                <div class="label">ORTOGRAFICA</div>
+            </div>
+            <div>
+                <canvas id="isometrica" width="150" height="150"></canvas>
+                <div class="label">ISOMETRICA</div>
+            </div>
+        </div>
+    </div>
+    <script src = "figuras.js"></script>
+</body>
+</html>
