@@ -1,40 +1,52 @@
 const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        // Configuración de OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setAnimationLoop( animate );
-document.body.appendChild( renderer.domElement );
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const numCubes = Math.floor(Math.random() * 5) + 1;
+        const initialPosition = -((numCubes - 1) * 2) / 2;
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        for (let i = 0; i < numCubes; i++) {
+            const material = new THREE.MeshBasicMaterial({ visible: false });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.x = initialPosition + (i * 2);
+            scene.add(cube);
 
-// Genera un número aleatorio entre 1 y 5 para determinar el número de cubos
-const numCubes = Math.floor(Math.random() * 5) + 1;
+            // Crear el wireframe (malla externa)
+            const wireframeGeometry = new THREE.WireframeGeometry(geometry);
+            const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
+            const wireframeCube = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+            cube.add(wireframeCube);
+        }
 
-// Calcula la posición inicial para centrar los cubos
-const initialPosition = -((numCubes - 1) * 2) / 2;
+        camera.position.z = 5;
 
-for (let i = 0; i < numCubes; i++) {
-  const material = new THREE.MeshBasicMaterial( { visible: false } );
-  const cube = new THREE.Mesh( geometry, material );
-  cube.position.x = initialPosition + (i * 2); // Establece la posición x de cada cubo
-  scene.add( cube );
+        function animate() {
+            // Actualizar controles
+            controls.update();
 
-  const wireframeGeometry = new THREE.WireframeGeometry( geometry );
-  const wireframeMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2 } );
-  const wireframeCube = new THREE.LineSegments( wireframeGeometry, wireframeMaterial );
-  cube.add( wireframeCube ); // Agrega la malla como hijo del cubo
-}
+            // Rotar todos los cubos de manera sincronizada
+            scene.children.forEach(cube => {
+                cube.rotation.x += 0.02; // Ajusta la velocidad de rotación
+                cube.rotation.y += 0.02; // Ajusta la velocidad de rotación
+            });
 
-camera.position.z = 5;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
 
-function animate () {
-  for (let i = 0; i < numCubes; i++) {
-    const cube = scene.children[i];
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-  }
+        // Manejar el redimensionamiento de la ventana
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
-  renderer.render( scene, camera );
-}
+        // Iniciar la animación
+        animate();
