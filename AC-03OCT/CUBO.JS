@@ -8,12 +8,15 @@ renderer.setAnimationLoop( animate );
 document.body.appendChild( renderer.domElement );
 
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const material = new THREE.MeshBasicMaterial( { 
+  transparent: true, 
+  opacity: 0 
+} ); // Make the cube invisible
 const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );
 
 const wireframeGeometry = new THREE.WireframeGeometry( geometry );
-const wireframeMaterial = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 2 } );
+const wireframeMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2 } ); // Set wireframe color to white
 const wireframeCube = new THREE.LineSegments( wireframeGeometry, wireframeMaterial );
 cube.add( wireframeCube ); 
 
